@@ -1,0 +1,55 @@
+<%- include('./partials/_header') %>
+  
+<body class="text-center">
+  
+<main class="form-signin">
+<form>
+  
+  <label for="inputEmail" class="visually-hidden">Email address</label>
+  <input type="email" id="inputEmail" class="email form-control" placeholder="Email address" required autofocus>
+  <label for="inputPassword" class="visually-hidden">Password</label>
+  <input type="password" id="inputPassword" class=" password form-control" placeholder="Password" required>
+  <div class="checkbox mb-3">
+    <label>    </label>
+  </div>
+  <button class="w-100 btn btn-lg btn-primary" type="submit">Register</button>
+</form>
+</main>
+
+<script> 
+
+const button = document.querySelector('button');
+const email = document.querySelector('.email');
+const password = document.querySelector('.password');
+
+button.onclick = async (e) => {
+   e.preventDefault()
+    await post()
+    
+};
+
+//Post functions
+async function post() {
+
+    const options = {
+      method: 'POST',
+                    body: JSON.stringify({
+                        email:email.value , 
+                        password:password.value
+                    }),
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+    }
+    const post  = await fetch('/register' , options)
+    const data = await post.json()
+    console.log(data);
+  }
+
+
+  
+
+
+</script>
+
+<%- include('./partials/_footer') %>

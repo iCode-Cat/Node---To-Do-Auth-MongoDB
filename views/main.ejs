@@ -1,0 +1,80 @@
+<%- include('./partials/_header') %>
+
+
+<h1>TO DO LIST</h1>
+
+<section>
+    <div class="input-container">
+        <input type="text" name="input" class="input">
+        <button class="add btn btn-primary btn-lg">ADD</button>
+    </div>
+
+
+    <% result.forEach(res => {%>
+    <div class="container">
+        <h2> <%= res.task %> </h2><button class="delete btn btn-danger btn-lg" name="<%= res._id%> "> DELETE</button>
+    </div>
+    <% }) %>
+</section>
+
+<script>
+    //declare the DOM
+
+    const add = document.querySelector('.add');
+    const input = document.querySelector('.input')
+    const section = document.querySelector('section');
+
+    deleteFunction()
+    function deleteFunction() {
+        const deleteIt = document.querySelectorAll('.delete');
+        const container = document.querySelectorAll('.container')
+
+        container.forEach(item => {
+         item.onclick = function(e) {
+             if(e.target.tagName.toLowerCase() == 'button')
+             item.remove()
+         }
+        }) 
+
+        deleteIt.forEach(del => {
+            del.addEventListener('click', async function () {
+                console.log('works');
+                const options = {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        value: del.name
+                    }),
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                }
+                const res = await fetch('/data', options);
+            })
+        })
+    }
+    add.onclick = async () => get()
+    async function get() {
+        //Post data to backend and get as json
+        try {
+            //Fetch options
+            const options = {
+                method: 'POST',
+                body: JSON.stringify({
+                    value: input.value
+                }),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }
+            const res = await fetch('/', options);
+            const getID = await res.json()
+            console.log(getID);
+            section.insertAdjacentHTML('beforeend',
+                `<div class="container"> <h2>  ${getID.task}  </h2><button name="${getID._id}" class="delete btn btn-danger btn-lg" > DELETE</button></div>`
+                )
+                deleteFunction()
+        } catch (err) {
+        }
+    }
+</script>
+<%- include('./partials/_footer') %>

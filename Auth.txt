@@ -1,0 +1,1 @@
+mongodb+srv://admin:123@cluster0.payg5.mongodb.net/user?retryWrites=true&w=majority'
